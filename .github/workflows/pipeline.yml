@@ -49,7 +49,7 @@ jobs:
           DB_PASSWORD: root
           DB_NAME: leave_management_test
           SECRET_TOKEN: ${{ secrets.SECRET_TOKEN }}
-          ADMIN_USER: admin@email.com
-          ADMIN_PASSWORD: qwerty
+          ADMIN_USER: testadmin@email.com
+          ADMIN_PASSWORD: test123
         run: npm test
         working-directory: server
