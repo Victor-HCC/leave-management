@@ -1,7 +1,7 @@
 import { Pool } from "pg";
 import 'dotenv/config'
 
-const { DB_USER, DB_HOST, DB_NAME, DB_PASSWORD, DB_PORT, HOST } = process.env
+const { DB_USER, DB_HOST, DB_NAME, DB_PASSWORD, DB_PORT } = process.env
 
 if (!DB_USER || !DB_HOST || !DB_NAME || !DB_PASSWORD || !DB_PORT) {
   throw new Error('Missing required environment variables for database connection');

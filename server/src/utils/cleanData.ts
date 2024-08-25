@@ -1,6 +1,64 @@
-import { Employee, LeaveType, LeaveRequest, LeaveBalance, LeaveBalanceWithName, LeaveRequestWithName } from "../types/types";
+import { Employee, LeaveType, LeaveRequest, LeaveBalance, LeaveBalanceWithName, LeaveRequestWithName, LeaveRequestStatus } from "../types/types";
 
-function cleanEmployeeData(row: any): Employee {
+interface EmployeeRow {
+  id: number;
+  name: string;
+  email: string;
+  department_id: number;
+  user_id: number;
+  hire_date: Date;
+}
+
+interface LeaveTypeRow {
+  id: number;
+  name: string;
+  description: string;
+  max_days_per_year: number;
+}
+
+interface LeaveRequestRow {
+  id: number;
+  employee_id: number;
+  start_date: Date;
+  end_date: Date;
+  leave_type_id: number;
+  status: LeaveRequestStatus;
+  reason: string;
+  requested_at: Date;
+  approved_at: Date | null;
+  rejected_at: Date | null;
+}
+
+interface LeaveRequestWithNameRow {
+  id: number;
+  start_date: Date;
+  end_date: Date;
+  leave_type_id: number;
+  name_leave_type: string;
+  status: LeaveRequestStatus;
+  reason: string;
+  requested_at: Date;
+  approved_at: Date | null;
+  rejected_at: Date | null;
+}
+
+interface LeaveBalanceRow {
+  id: number;
+  employee_id: number;
+  leave_type_id: number;
+  balance: number;
+}
+
+interface LeaveBalanceWithNameRow {
+  id: number;
+  employee_id: number;
+  leave_type_id: number;
+  name_leave_type: string;
+  balance: number;
+}
+
+
+function cleanEmployeeData(row: EmployeeRow): Employee {
   return {
     id: row.id,
     name: row.name,
@@ -11,7 +69,7 @@ function cleanEmployeeData(row: any): Employee {
   }
 }
 
-function cleanLeaveTypeData(row: any): LeaveType {
+function cleanLeaveTypeData(row: LeaveTypeRow): LeaveType {
   return {
     id: row.id,
     name: row.name,
@@ -20,7 +78,7 @@ function cleanLeaveTypeData(row: any): LeaveType {
   }
 }
 
-function cleanLeaveRequestData(row: any): LeaveRequest {
+function cleanLeaveRequestData(row: LeaveRequestRow): LeaveRequest {
   return {
     id: row.id,
     employeeId: row.employee_id,
@@ -35,7 +93,7 @@ function cleanLeaveRequestData(row: any): LeaveRequest {
   }
 }
 
-function cleanLeaveRequestWithNameData(row: any): LeaveRequestWithName {
+function cleanLeaveRequestWithNameData(row: LeaveRequestWithNameRow): LeaveRequestWithName {
   return {
     id: row.id,
     startDate: row.start_date,
@@ -50,7 +108,7 @@ function cleanLeaveRequestWithNameData(row: any): LeaveRequestWithName {
   }
 }
 
-function cleanLeaveBalanceData(row: any): LeaveBalance {
+function cleanLeaveBalanceData(row: LeaveBalanceRow): LeaveBalance {
   return {
     id: row.id,
       employeeId: row.employee_id,
@@ -59,7 +117,7 @@ function cleanLeaveBalanceData(row: any): LeaveBalance {
   }
 }
 
-function cleanLeaveBalanceDataWithName(row: any): LeaveBalanceWithName {
+function cleanLeaveBalanceDataWithName(row: LeaveBalanceWithNameRow): LeaveBalanceWithName {
   return {
     id: row.id, 
     employeeId: row.employee_id, 

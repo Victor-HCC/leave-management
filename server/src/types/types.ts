@@ -30,22 +30,22 @@ export interface LeaveRequest {
   leaveTypeId: number
   status: LeaveRequestStatus
   reason: string
-  requestedAt: string
-  approvedAt?: string
-  rejectedAt?: string
+  requestedAt: Date
+  approvedAt?: Date | null
+  rejectedAt?: Date | null
 }
 
 export interface LeaveRequestWithName {
   id: number
-  startDate: string
-  endDate: string
+  startDate: Date
+  endDate: Date
   leaveTypeId: number
   nameLeaveType: string
   status: LeaveRequestStatus
   reason: string
-  requestedAt: string
-  approvedAt?: string
-  rejectedAt?: string
+  requestedAt: Date
+  approvedAt?: Date | null
+  rejectedAt?: Date | null
 }
 
 export interface LeaveBalanceInput {
@@ -91,7 +91,7 @@ export interface UserInput {
 }
 
 export type UpdateFields = {
-  [key: string]: any
+  [key: string]: string | number | boolean | Date
 }
 
 export type AllEmployees = ({

@@ -40,7 +40,12 @@ const authMiddleware = (roles: string[] = []) => {
 
       next()
     } catch (error) {
-      res.status(400).json({ message: 'Invalid Token.'})
+      // res.status(400).json({ message: 'Invalid Token.'})
+      if (error instanceof Error) {
+        res.status(400).json({ error: error.message });
+      } else {
+        res.status(400).json({ error: 'An unknown error occurred at Authentication.' });
+      }
     }
   }
 }

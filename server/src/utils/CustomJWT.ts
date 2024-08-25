@@ -1,11 +1,16 @@
-import crypto from 'crypto'
+import crypto from 'crypto';
 
-class CustomJWT {
-  private key: string
-  private alg = { alg: 'HS256', typ: 'JWT'}
+interface JWTHeader {
+  alg: string;
+  typ: string;
+}
+
+class CustomJWT<T extends object> {
+  private key: string;
+  private readonly alg: JWTHeader = { alg: 'HS256', typ: 'JWT' };
 
   constructor(key: string) {
-    this.key = key
+    this.key = key;
   }
 
   private encodeBase64Url(str: string): string {
@@ -26,19 +31,19 @@ class CustomJWT {
     return Buffer.from(str, 'base64').toString('utf-8');
   }
 
-  private stringify(obj: Record<string, any>): string {
+  private stringify(obj: object): string {
     return JSON.stringify(obj);
   }
 
-  private checkSumGen(head: string, body: string): string {
-    const checkSumStr = head + '.' + body;
+  private checkSumGen(header: string, body: string): string {
+    const checkSumStr = header + '.' + body;
     const hash = crypto.createHmac('sha256', this.key);
     const checkSum = hash.update(checkSumStr).digest('base64');
 
     return this.encodeBase64Url(checkSum);
   }
 
-  encode(obj: Record<string, any>): string {
+  encode(obj: T): string {
     const header = this.encodeBase64Url(this.stringify(this.alg));
     const body = this.encodeBase64Url(this.stringify(obj));
     const checkSum = this.checkSumGen(header, body);
@@ -46,18 +51,18 @@ class CustomJWT {
     return `${header}.${body}.${checkSum}`;
   }
 
-  decode(token: string): Record<string, any> | false {
+  decode(token: string): T | false {
     try {
-      const [head, body, hash] = token.split('.');
+      const [header, body, hash] = token.split('.');
 
-      if (!head || !body || !hash) {
+      if (!header || !body || !hash) {
         throw new Error('Invalid token format');
       }
 
-      const checkSum = this.checkSumGen(head, body);
+      const checkSum = this.checkSumGen(header, body);
 
       if (hash === checkSum) {
-        return JSON.parse(this.decodeBase64Url(body));
+        return JSON.parse(this.decodeBase64Url(body)) as T;
       } else {
         throw new Error('JWT authentication failed');
       }
@@ -66,7 +71,6 @@ class CustomJWT {
       return false;
     }
   }
-
 }
 
-export default CustomJWT
+export default CustomJWT;

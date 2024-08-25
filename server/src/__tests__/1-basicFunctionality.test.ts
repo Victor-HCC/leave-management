@@ -6,7 +6,6 @@ let tokenAdmin: string; //Variable to store the token
 let tokenEmployee: string; 
 const baseUrl = '/api/v1'
 let employeeId: number;
-let balance: number
 let idRequest: number
 
 describe('API test', () => {
@@ -84,7 +83,7 @@ describe('API test', () => {
           })
         
         expect(res.statusCode).toEqual(400)
-        expect(res.body.message).toEqual('Invalid Token.')
+        expect(res.body).toHaveProperty('error')
       })
     })
 
@@ -190,7 +189,6 @@ describe('API test', () => {
           expect(leaveBalance).toHaveProperty('leaveTypeId');
           expect(leaveBalance).toHaveProperty('nameLeaveType');
           expect(leaveBalance).toHaveProperty('balance');
-          balance = leaveBalance.balance
         }
       })
     })

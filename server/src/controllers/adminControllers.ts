@@ -4,7 +4,7 @@ import LeaveTypeRepository from "../repositories/LeaveTypeRepositoryImpl";
 import LeaveBalanceRepository from "../repositories/LeaveBalanceRepositoryImpl";
 import LeaveRequestRepository from "../repositories/LeaveRequestRepositoryImpl";
 import getWorkingDays from "../utils/daysCounter";
-import { AllEmployees, AllLeaveRequests, Employee, EmployeeInput, LeaveRequest, LeaveRequestStatus, LeaveType, User } from "../types/types";
+import { AllEmployees, AllLeaveRequests, Employee, LeaveRequest, LeaveRequestStatus, LeaveType, User } from "../types/types";
 
 const employeeRepository = new EmployeeRepository()
 const leaveTypeRepository = new LeaveTypeRepository()
