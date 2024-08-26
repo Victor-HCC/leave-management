@@ -1,6 +1,7 @@
 import request from 'supertest';
 import server from '../server'; // Your Express app
 import pool from '../db'; // Your PostgreSQL connection
+import 'dotenv/config'
 
 import * as adminControllers from '../controllers/adminControllers'
 
@@ -18,8 +19,8 @@ describe('Admin handlers errors handling', () => {
     const res = await request(server)
       .post(`${baseUrl}/login`)
       .send({
-        username: 'testadmin@email.com',
-        password: 'test123',
+        username: process.env.ADMIN_USER,
+        password: process.env.ADMIN_PASSWORD,
       });
     token = res.body.token
   })

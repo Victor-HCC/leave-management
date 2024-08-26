@@ -1,6 +1,7 @@
 import request from 'supertest';
 import server from '../server'; // Your Express app
 import pool from '../db'; // Your PostgreSQL connection
+import 'dotenv/config'
 
 let tokenAdmin: string; //Variable to store the token
 let tokenEmployee: string; 
@@ -20,7 +21,7 @@ describe('API test', () => {
           .post(`${baseUrl}/login`)
           .send({
             username: 'testemployee@email.com',
-            password: 'test123',
+            password: process.env.ADMIN_PASSWORD,
           });
         expect(res.statusCode).toEqual(400);
         expect(res.body.message).toEqual('Invalid credentials.');
@@ -32,7 +33,7 @@ describe('API test', () => {
         const res = await request(server)
           .post(`${baseUrl}/login`)
           .send({
-            username: 'testadmin@email.com',
+            username: process.env.ADMIN_USER,
             password: '111111',
           });
         expect(res.statusCode).toEqual(400);
@@ -45,8 +46,8 @@ describe('API test', () => {
         const res = await request(server)
           .post(`${baseUrl}/login`)
           .send({
-            username: 'testadmin@email.com',
-            password: 'test123',
+            username: process.env.ADMIN_USER,
+            password: process.env.ADMIN_PASSWORD,
           });
         expect(res.statusCode).toEqual(200);
         expect(res.body).toHaveProperty('token');
