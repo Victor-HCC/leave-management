@@ -232,6 +232,39 @@ describe('API test', () => {
       })
     })
 
+    describe('Create leave request with non-existing leave type Id', () => {
+      it('Should get error message', async () => {
+        const res = await request(server)
+          .post(`${baseUrl}/employee/leave-request/${employeeId}`)
+          .set('Authorization', tokenEmployee)
+          .send({
+            startDate: "2024-09-16",
+            endDate: "2024-09-20",
+            leaveTypeId: 10,
+            reason: "Vacations"
+          })
+        expect(res.statusCode).toEqual(400)
+        expect(res.body).toHaveProperty('error')
+        expect(res.body.error).toEqual('No leave balance for the leave type id.')
+      })
+    })
+
+    describe('Create leave request exceeding leave balance available', () => {
+      it('Should get error message', async () => {
+        const res = await request(server)
+          .post(`${baseUrl}/employee/leave-request/${employeeId}`)
+          .set('Authorization', tokenEmployee)
+          .send({
+            startDate: "2024-09-16",
+            endDate: "2024-12-20",
+            leaveTypeId: 6,
+            reason: "Something"
+          })
+        expect(res.statusCode).toEqual(400)
+        expect(res.body).toHaveProperty('error')
+      })
+    })
+
     describe('Create leave request with wrong id', () => {
       it("Shouldn't create a new leave request", async () => {
         const res = await request(server)

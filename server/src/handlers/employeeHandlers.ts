@@ -32,7 +32,11 @@ export const createLeaveRequestHandler = async (req: Request, res: Response): Pr
     }
 
     const { startDate, endDate, leaveTypeId, reason } = req.body
-    const newLeaveRequest = await createLeaveRequest(employeeId, startDate, endDate, leaveTypeId, reason)
+
+    const start = typeof startDate === 'string' ? new Date(startDate) : startDate;
+    const end = typeof endDate === 'string' ? new Date(endDate) : endDate;
+
+    const newLeaveRequest = await createLeaveRequest(employeeId, start, end, leaveTypeId, reason)
 
     res.status(201).json(newLeaveRequest)
   } catch (error) {
