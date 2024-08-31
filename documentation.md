@@ -9,8 +9,8 @@
 -    4.1. [Login Endpoint](#login-endpoint)
 -    4.2. [Employee Endpoints](#employee-endpoints)
 -    4.3. [Admin Endpoints](#admin-endpoints)
-5. [Install](#install)
-6. [Run](#run)
+5. [Install and run](#install-and-run)
+6. [Run tests](#run-tests)
 
 ## Description
 
@@ -334,7 +334,42 @@ curl -X 'POST' \\
 ]
 ```
 
-## Install & Run
+### /api/v1/admin/update-balance/:employeeId
+
+- PATCH `/api/v1/admin/update-balance/:employeeId` - Update balance of a leave type for an employee.
+  -  Server should answer with response 200 and a message.
+
+#### Example of request
+```json
+{
+  "leaveTypeId": 2, // Id of the leave type
+  "balance": 5 // New balance
+}
+```
+#### Response
+```json
+{
+  "message": 'Balance updated successfully.'
+}
+```
+
+### /api/v1/admin/get-user/:userId
+
+- GET `/api/v1/admin/get-user/:userId` - Get user data by id.
+  -  Server should answer with response 200 and the user.
+
+#### Example of response
+```json
+{
+  "id": 2,
+  "username": "john@gmail.com",
+  "password": "$2a$10$MaZQ.zE8/aAfxn9KhWy1u.ZaZ120MdM6B.9ld40fgK4lGuVYSkg1i",
+  "role": "employee",
+  "active": true
+}
+```
+
+## Install and run
 
 ```
   docker compose up --build

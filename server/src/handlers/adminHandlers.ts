@@ -7,6 +7,8 @@ import {
   getAllLeaveRequests, 
   getEmployeeById, 
   getLeaveRequestsByStatus, 
+  getUserById, 
+  updateBalance, 
   updateLeaveRequest 
 } from "../controllers/adminControllers";
 
@@ -126,6 +128,54 @@ export const deleteEmployeeHandler = async (req: Request, res: Response): Promis
       res.status(400).json({ error: error.message });
     } else {
       res.status(400).json({ error: 'An unknown error occurred at deleting the employee.' });
+    }
+  }
+}
+
+export const updateEmployeeBalanceHandler = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const employeeId = parseInt(req.params.employeeId)
+    const leaveTypeId = parseInt(req.body.leaveTypeId)
+    const balance = parseInt(req.body.balance)
+
+    if(balance < 0) {
+      res.status(400).json({ message: "The balance can't be negative."})
+      return
+    }
+
+    const updated = await updateBalance(employeeId, leaveTypeId, balance)
+
+    if(!updated) {
+      res.status(400).json({ message: 'Balance not updated.'})
+      return
+    }
+
+    res.status(200).json({ message: 'Balance updated successfully.'})
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(400).json({ error: error.message });
+    } else {
+      res.status(400).json({ error: 'An unknown error occurred at updating the balance.' });
+    }
+  }
+}
+
+export const getUserByIdHandler = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = parseInt(req.params.userId)
+    const user = await getUserById(userId)
+
+    if(!user) {
+      res.status(400).json({ message: 'User not found.'})
+      return
+    }
+
+    res.status(200).json(user)
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(400).json({ error: error.message });
+    } else {
+      res.status(400).json({ error: 'An unknown error occurred at getting the user.' });
     }
   }
 }

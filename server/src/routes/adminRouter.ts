@@ -5,6 +5,8 @@ import {
   getEmployeesHandler,
   getLeaveRequestHandler,
   getLeaveRequestsByStatusHandler,
+  getUserByIdHandler,
+  updateEmployeeBalanceHandler,
   updateLeaveRequestHandler 
 } from "../handlers/adminHandlers";
 
@@ -16,5 +18,7 @@ adminRouter.get('/leave-requests', getLeaveRequestHandler)
 adminRouter.patch('/leave-requests/:id', updateLeaveRequestHandler)
 adminRouter.get('/leave-requests/status/:status', getLeaveRequestsByStatusHandler)
 adminRouter.delete('/delete-employee/:employeeId', deleteEmployeeHandler)
+adminRouter.patch('/update-balance/:employeeId', updateEmployeeBalanceHandler)
+adminRouter.get('/get-user/:userId', getUserByIdHandler)
 
 export default adminRouter

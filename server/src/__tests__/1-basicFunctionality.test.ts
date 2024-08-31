@@ -380,6 +380,69 @@ describe('API test', () => {
         expect(res.body.message).toEqual('Employee not found.')
       })
     })
+
+    describe('Update the balance of a leave type for an employee', () => {
+      it('Should update the balance', async () => {
+        const res = await request(server)
+          .patch(`${baseUrl}/admin/update-balance/${employeeId}`)
+          .set('Authorization', tokenAdmin)
+          .send({
+            leaveTypeId: 7,
+            balance: 10
+          })
+        expect(res.statusCode).toEqual(200)
+        expect(res.body.message).toEqual('Balance updated successfully.')
+      })
+    })
+
+    describe('Update the balance of a leave type for an employee with negative value', () => {
+      it("Shouldn't update the balance", async () => {
+        const res = await request(server)
+          .patch(`${baseUrl}/admin/update-balance/${employeeId}`)
+          .set('Authorization', tokenAdmin)
+          .send({
+            leaveTypeId: 7,
+            balance: -10
+          })
+        expect(res.statusCode).toEqual(400)
+        expect(res.body.message).toEqual("The balance can't be negative.")
+      })
+    })
+
+    describe('Update the balance of a leave type for an employee with non-existing data', () => {
+      it("Shouldn't update the balance", async () => {
+        const res = await request(server)
+          .patch(`${baseUrl}/admin/update-balance/${employeeId}`)
+          .set('Authorization', tokenAdmin)
+          .send({
+            leaveTypeId: 100,
+            balance: 10
+          })
+        expect(res.statusCode).toEqual(400)
+        expect(res.body.message).toEqual("Balance not updated.")
+      })
+    })
+  })
+
+  describe('Get user by id', () => {
+    it('Should get a user', async () => {
+      const res = await request(server)
+        .get(`${baseUrl}/admin/get-user/2`)
+        .set('Authorization', tokenAdmin)
+      expect(res.statusCode).toEqual(200)
+      expect(res.body).toHaveProperty('role')
+    })
+  })
+
+  describe('Get user by non-existing id', () => {
+    it('Should get a message', async () => {
+      const res = await request(server)
+        .get(`${baseUrl}/admin/get-user/200`)
+        .set('Authorization', tokenAdmin)
+      expect(res.statusCode).toEqual(400)
+      expect(res.body).toHaveProperty('message')
+      expect(res.body.message).toEqual('User not found.')
+    })
   })
 
 

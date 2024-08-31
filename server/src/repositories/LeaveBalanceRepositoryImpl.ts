@@ -56,6 +56,19 @@ class LeaveBalanceRepositoryImpl extends LeaveBalanceRepository {
   
     return true;
   }
+
+  async updateLeaveBalanceByType(employeeId: number, leaveTypeId: number, balance: number): Promise<boolean> {
+    const result = await pool.query(
+      `UPDATE leave_balances
+      SET balance = $1
+      WHERE employee_id = $2 AND leave_type_id = $3`,
+      [balance, employeeId, leaveTypeId]
+    )
+
+    console.log(result)
+
+    return result.rowCount? result.rowCount > 0 : false
+  }
   
 }
 

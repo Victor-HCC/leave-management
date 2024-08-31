@@ -6,6 +6,7 @@ abstract class LeaveBalanceRepository {
   abstract findByEmployeeIdAndLeaveTypeId(employeeId: number, leaveTypeId: number): Promise<LeaveBalance | null>
   abstract decreaseLeaveBalance(employeeId: number, leaveTypeId: number, days: number): Promise<void>
   abstract deleteByEmployeeId(employeeId: number): Promise<boolean>
+  abstract updateLeaveBalanceByType(employeeId: number, leaveTypeId: number, balance: number): Promise<boolean>
 }
 
 export default LeaveBalanceRepository

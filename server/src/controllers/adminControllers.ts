@@ -78,3 +78,15 @@ export const deleteEmployee = async (id: number): Promise<boolean> => {
 
   return employee ? userService.softDeleteUser(employee.userId) : false
 }
+
+export const updateBalance = async (employeeId: number, leaveTypeId: number, balance: number): Promise<boolean> => {
+  const updated = await leaveBalanceRepository.updateLeaveBalanceByType(employeeId, leaveTypeId, balance)
+
+  return updated
+}
+
+export const getUserById = async (id: number): Promise<User | null> => {
+  const user = await userService.findUserById(id)
+
+  return user
+}

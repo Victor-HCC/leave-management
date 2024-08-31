@@ -177,4 +177,78 @@ describe('Admin handlers errors handling', () => {
     });
   })
 
+  describe('Error on update leave balance by leave type', () => {
+    it('Should return an error response from the catch block', async () => {
+      // Mocking updateLeaveRequest to simulate an error
+      (adminControllers.updateBalance as jest.Mock).mockImplementation(() => {
+        throw new Error('Database connection failed.');
+      });
+  
+      const res = await request(server)
+        .patch(`${baseUrl}/admin/update-balance/1`)
+        .set('Authorization', token)
+        .send({
+          leaveTypeId: 7,
+          balance: 10
+        })
+  
+      expect(res.statusCode).toEqual(400);
+      expect(res.body).toHaveProperty('error', 'Database connection failed.');
+    });
+  })
+
+  describe('Non-standard error on update leave balance by leave type', () => {
+    it('Should handle non-standard errors', async () => {
+      // Mocking updateLeaveRequest to throw a non-standard error
+      (adminControllers.updateBalance as jest.Mock).mockImplementation(() => {
+        // Throwing a string instead of an Error object
+        throw 'Unexpected error';
+      });
+  
+      const res = await request(server)
+        .patch(`${baseUrl}/admin/update-balance/1`)
+        .set('Authorization', token)
+        .send({
+          leaveTypeId: 7,
+          balance: 10
+        })
+  
+      expect(res.statusCode).toEqual(400);
+      expect(res.body).toHaveProperty('error', 'An unknown error occurred at updating the balance.');
+    });
+  })
+
+  describe('Error on getting a user by id', () => {
+    it('Should return an error response from the catch block', async () => {
+      // Mocking getAllLeaveRequests to simulate an error
+      (adminControllers.getUserById as jest.Mock).mockImplementation(() => {
+        throw new Error('Database connection failed.');
+      });
+  
+      const res = await request(server)
+        .get(`${baseUrl}/admin/get-user/2`)
+        .set('Authorization', token)
+  
+      expect(res.statusCode).toEqual(400);
+      expect(res.body).toHaveProperty('error', 'Database connection failed.');
+    });
+  })
+
+  describe('Non-standard error getting a user by id', () => {
+    it('Should handle non-standard errors', async () => {
+      // Mocking getAllLeaveRequests to throw a non-standard error
+      (adminControllers.getUserById as jest.Mock).mockImplementation(() => {
+        // Throwing a string instead of an Error object
+        throw 'Unexpected error';
+      });
+  
+      const res = await request(server)
+        .get(`${baseUrl}/admin/get-user/2`)
+        .set('Authorization', token)
+  
+      expect(res.statusCode).toEqual(400);
+      expect(res.body).toHaveProperty('error', 'An unknown error occurred at getting the user.');
+    });
+  })
+
 });
