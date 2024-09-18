@@ -10,3 +10,4 @@ export function cleanEmployeeData(row: GetEmployeeDTO) {
     hireDate: row.hire_date
   }
 }
+

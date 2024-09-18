@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { DatabaseService } from "src/database/database.service";
 import { LeaveType } from "src/types/type";
-import { cleanLeaveTypeData } from "src/utils/dataCleaners";
+import { cleanLeaveTypeData } from "../utils/dataCleaners";
 
 @Injectable()
 export class LeaveTypeRepository {

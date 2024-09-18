@@ -1,6 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import { DatabaseService } from "src/database/database.service";
 import { LeaveRequestInput } from "../dto/leave-request-input.dto";
+import { LeaveRequest } from "src/types/type";
+import { cleanLeaveRequestData } from "../utils/dataCleaners";
 
 @Injectable()
 export class LeaveRequestRepository {
@@ -65,14 +67,14 @@ export class LeaveRequestRepository {
     return result.rows
   }
 
-  async updateStatus(id: number, status: string): Promise<any> {
+  async updateStatus(id: number, status: string): Promise<LeaveRequest> {
     const client = this.dbService.getClient()
     const result = await client.query(
       `SELECT * FROM update_leave_request_status($1, $2)`,
       [id, status]
     )
 
-    return result.rows[0]
+    return cleanLeaveRequestData(result.rows[0])
   }
 
   async deleteById(id: number): Promise<boolean> {

@@ -4,6 +4,7 @@ import { LeaveTypeRepository } from './repositories/leave-type.repository';
 import { LeaveBalanceRepository } from './repositories/leave-balance.repository';
 import { LeaveRequestInput } from './dto/leave-request-input.dto';
 import { LeaveBalanceInput } from './dto/leave-balance-input.dto';
+import { LeaveRequest } from 'src/types/type';
 
 @Injectable()
 export class LeaveService {
@@ -33,7 +34,7 @@ export class LeaveService {
     return this.leaveRequestRepository.findByStatus(status)
   }
 
-  async updateLeaveRequestStatus(id: number, status: string) {
+  async updateLeaveRequestStatus(id: number, status: string): Promise<LeaveRequest> {
     return this.leaveRequestRepository.updateStatus(id, status)
   }
 
