@@ -3,6 +3,8 @@ import { EmployeeModule } from './employee/employee.module';
 import { DatabaseModule } from './database/database.module';
 import { ConfigModule } from '@nestjs/config';
 import { AdminModule } from './admin/admin.module';
+import { UserModule } from './user/user.module';
+import { LeaveModule } from './leave/leave.module';
 
 @Module({
   imports: [
@@ -10,7 +12,7 @@ import { AdminModule } from './admin/admin.module';
       isGlobal: true
     }),
     EmployeeModule, 
-    DatabaseModule, AdminModule
+    DatabaseModule, AdminModule, UserModule, LeaveModule
   ],
   controllers: [],
   providers: [],

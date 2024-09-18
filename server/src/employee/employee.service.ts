@@ -13,4 +13,8 @@ export class EmployeeService {
   async getAllEmployees() {
     return this.employeeRepository.getAll()
   }
+
+  async findEmployeeById(id: number) {
+    return this.employeeRepository.findById(id)
+  }
 }

@@ -9,7 +9,7 @@ export class EmployeeRepository {
 
   async create(employeeDto: CreateEmployee): Promise<any> {
     const { name, email, departmentId, userId, hireDate } = employeeDto
-    const query = 'INSERT INTO employees (name, email, department_id, user_id, hire_date VALUES ($1, $2, $3, $4, $5) RETURNING *'
+    const query = 'INSERT INTO employees (name, email, department_id, user_id, hire_date) VALUES ($1, $2, $3, $4, $5) RETURNING *'
     const values = [name, email, departmentId, userId, hireDate]
     const client = this.dbService.getClient()
     return client.query(query, values)
@@ -24,5 +24,13 @@ export class EmployeeRepository {
     const client = this.dbService.getClient()
     const result = await client.query(query)
     return result.rows.map(cleanEmployeeData)
+  }
+
+  async findById(id: number) {
+    const query = `SELECT * FROM employees WHERE id = $1`
+    const client = this.dbService.getClient()
+    const result = await client.query(query, [id])
+
+    return cleanEmployeeData(result.rows[0])
   }
 }
